@@ -1,0 +1,22 @@
+# 忽略前端依赖和打包结果
+frontend/node_modules/
+frontend/dist/
+
+# 忽略后端 Python 缓存和虚拟环境
+backend/__pycache__/
+backend/.venv/
+backend/venv/
+*.pyc
+
+# 忽略开发工具的本地配置文件（防止 PyCharm 和 IDEA 的配置互相冲突）
+.idea/
+frontend/.idea/
+backend/.idea/
+.vscode/
+
+# 忽略模型权重文件和系统日志
+*.log
+.DS_Store
+
+# 忽略私密环境变量文件
+.env
