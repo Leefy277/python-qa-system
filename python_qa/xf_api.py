@@ -10,7 +10,7 @@ import websocket
 
 from dotenv import load_dotenv
 
-#去读 .env 文件
+#读 .env 文件
 load_dotenv()
 
 
@@ -22,8 +22,8 @@ class XunFeiChatDocAPI:
         self.API_SECRET = os.getenv("XF_API_SECRET")
         self.file_id = os.getenv("XF_FILE_ID")
 
+    #动态安全鉴权
     def _get_auth_params(self):
-
         timestamp = str(int(time.time()))
         auth_str = self.APP_ID + timestamp
         auth = hashlib.md5(auth_str.encode('utf-8')).hexdigest()
@@ -33,7 +33,6 @@ class XunFeiChatDocAPI:
             auth.encode('utf-8'),
             hashlib.sha1
         ).digest()
-
         signature_base64 = base64.b64encode(signature_bytes).decode('utf-8')
 
         return {
@@ -44,7 +43,7 @@ class XunFeiChatDocAPI:
 
     def _convert_json_to_txt(self, json_path, txt_path):
         """
-        【数据清洗网关】将本地不合规的 json 自动化解构清洗为合规的纯文本 txt
+        将本地不合规的 json 自动化解构清洗为合规的纯文本 txt
         """
         try:
             with open(json_path, 'r', encoding='utf-8') as fj:
@@ -64,7 +63,7 @@ class XunFeiChatDocAPI:
 
     def upload_knowledge_base(self, json_file_path='faq_dataset.json'):
         """
-        【规范化上传接口】若云端变更需要重新上传时调用
+        【规范化上传接口】
         """
         url = "https://chatdoc.xfyun.cn/openapi/v1/file/upload"
         headers = self._get_auth_params()
@@ -77,7 +76,7 @@ class XunFeiChatDocAPI:
 
         try:
             if not os.path.exists(json_file_path):
-                print(f"【⚠️ 错误】未找到本地数据源: {json_file_path}")
+                print(f"【错误】未找到本地数据源: {json_file_path}")
                 return False
 
             # 执行格式转换
@@ -108,12 +107,8 @@ class XunFeiChatDocAPI:
             return False
 
     def ask_remote_ai(self, question):
-        """
-        【对齐规则WebSocket问答】联合绑定的教育知识库进行精准实时作答
-        """
         # 实时根据通过测试的算法生成凭证参数
         auth_params = self._get_auth_params()
-
         appId = auth_params["appId"]
         timestamp = auth_params["timestamp"]
         signature = urllib.parse.quote(auth_params["signature"])
@@ -157,17 +152,3 @@ class XunFeiChatDocAPI:
 
         except Exception as e:
             return f"【讯飞云连接异常】: {str(e)}"
-
-
-# 独立测试模块
-if __name__ == "__main__":
-    xf_client = XunFeiChatDocAPI()
-
-    print("--- 开始测试云端 WebSocket 问答质量对比 ---")
-    test_q = "Python 中 == 和 is 有什么区别？"
-    print(f"发送提问: '{test_q}'")
-
-    answer = xf_client.ask_remote_ai(test_q)
-    print("\n========= 科大讯飞 ChatDoc 回答 =========")
-    print(answer)
-    print("=========================================")

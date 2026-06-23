@@ -117,4 +117,4 @@ qa_data = [
 with open('faq_dataset.json', 'w', encoding='utf-8') as f:
     json.dump(qa_data, f, ensure_ascii=False, indent=4)
 
-print("【大功告成】100条基础问答数据集已经成功写入到 faq_dataset.json 中了！")
+print("100条基础问答数据集已经成功写入到 faq_dataset.json 中了.")
