@@ -20,3 +20,10 @@ backend/.idea/
 
 # 忽略私密环境变量文件
 .env
+# 忽略所有数据文件和模型缓存
+data/
+*.pkl
+*.index
+__pycache__/
+.env
+.idea/

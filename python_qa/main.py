@@ -21,20 +21,16 @@ app.add_middleware(
 )
 
 # 全局对象初始化（服务启动时加载一次）
-print("【系统初始化】正在加载前置意图分类网关...")
 classifier = IntentClassifier()
 
-print("【系统初始化】正在构建本地词频矩阵（TF-IDF）...")
 tfidf_engine = TFIDFSearchEngine()
 
-print("【系统初始化】正在加载本地神经网络权重（Sentence-BERT）...")
 sbert_engine = SBERTSearchEngine()
 
-print("【系统初始化】正在挂载远端科大讯飞大厂对比引擎...")
 xf_client = XunFeiChatDocAPI()
 
 # 全局统一的温柔引导话术
-UNIFIED_GUIDE_MSG = "你好呀！我是专业的 Python 编程小助手。我不太懂这个日常问题哦~ 请向我提问类似“如何反转列表”、“解释面向对象”等 Python 相关的知识吧！"
+UNIFIED_GUIDE_MSG = "你好呀！我是专业的 Python 编程小助手。我不太懂这个日常问题哦~ 请向我提问类似“Python 是什么类型的语言”、“什么是集合”等 Python 相关的知识吧！"
 
 class QueryRequest(BaseModel):
     text: str
